@@ -222,7 +222,7 @@ On launch, the Electron client automatically:
 
 ---
 
-# Suggested Project Structure
+# Project Structure
 
 ```text
 CompactIQ
