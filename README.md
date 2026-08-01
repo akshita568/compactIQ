@@ -1,77 +1,297 @@
-# CompactIQ: Autonomous Compliance Engine
+# CompactIQ Enterprise Compliance Engine
 
-![Version](https://img.shields.io/badge/version-1.0.0--beta-blue)
-![Architecture](https://img.shields.io/badge/architecture-Microservices-success)
-![LLM](https://img.shields.io/badge/AI-Gemini_Powered-purple)
-![License](https://img.shields.io/badge/license-MIT-green)
+CompactIQ is an enterprise-grade, AI-powered compliance engine that automates endpoint compatibility validation by combining **Generative AI**, **Knowledge Graphs**, and **live endpoint telemetry**.
 
-CompactIQ is an enterprise-grade, **AI-driven IT compliance engine** designed to validate endpoint device configurations against rapidly changing, complex compatibility matrices. 
+Enterprise IT teams rely on release notes, compatibility matrices, firmware advisories, and security bulletins to maintain compliant systems. Since these documents are unstructured and frequently updated, manually maintaining compatibility rules is slow and error-prone.
 
-Modern enterprise environments are bound by strict vendor requirements, security bulletins, and hardware dependencies. Traditional compliance tools rely on hardcoded rulesets that become stale the moment they are published. **CompactIQ solves this by dynamically reading raw documentation using Generative AI (Google Gemini), building a semantic Knowledge Graph of dependencies, and executing zero-touch automated scans on client endpoints.**
+CompactIQ solves this by allowing administrators to upload vendor documentation directly into the platform. Using **Google Gemini**, the system automatically extracts hardware requirements, software dependencies, firmware constraints, and compatibility relationships, storing them as an intelligent knowledge graph. The Electron desktop client simultaneously performs a local endpoint scan and validates the machine against the generated compliance rules, instantly identifying dependency conflicts and compatibility issues.
 
 ---
 
-## ✨ Key Capabilities
+# Features
 
-### 1. AI-Driven Knowledge Ingestion
-Instead of manually programming rules (e.g., "Windows 11 requires BIOS >= 1.15"), IT Administrators can drag-and-drop raw PDF release notes and security bulletins directly into the admin portal. The backend Gemini integration parses the unstructured text, extracts hard dependencies, and translates them into an intelligent rules matrix.
-
-### 2. Graph-Based Rules Engine
-Compliance isn't linear—it's a web of dependencies. CompactIQ utilizes a Knowledge Graph architecture (currently powered by NetworkX) to map `REQUIRES`, `CONFLICTS_WITH`, and `RECOMMENDS` relationships between hardware models, OS versions, firmware, and software agents. 
-
-### 3. Zero-Touch Endpoint Scanning
-The Electron-based client application runs a silent, native PowerShell telemetry scan on the host machine to gather component data. This footprint is seamlessly transmitted to the backend where it is mapped against the global graph to determine immediate compliance posture.
-
-### 4. Interactive Visualizations & Remediation
-Users can explore their device's health through dynamic Compliance Dashboards, an interactive React Flow Knowledge Graph showing exact broken dependency chains, and contextual Component Modals.
+- AI-powered PDF compatibility document ingestion
+- Automatic rule extraction using Google Gemini
+- Knowledge Graph-based dependency mapping
+- Zero-touch endpoint hardware & software scanning
+- Interactive compliance dashboard
+- Visual dependency graph
+- Enterprise compliance validation
+- Admin portal for document and rule management
 
 ---
 
-## 🛠 Technology Stack
+# Architecture
 
-**Backend System**
-* **Framework:** Python / FastAPI
-* **Graph Engine:** NetworkX (In-Memory Graph Processing)
-* **AI Provider:** Google Gemini GenAI SDK (Text2Graph extraction)
-* **Storage:** SQLite (Configured for future PostgreSQL/Multi-Tenant migration)
+The system is divided into three independent layers:
 
-**Frontend System**
-* **Framework:** React.js
-* **Desktop Wrapper:** Electron (For native OS hardware scanning)
-* **Visualizations:** React Flow (Graph canvas), Recharts, Lucide-React (Iconography)
-* **Styling:** Custom CSS with robust Dark/Light Mode Glassmorphism
+### AI Knowledge Layer
+- PDF Parsing
+- Google Gemini Integration
+- Rule Extraction Engine
+- Knowledge Graph Generation
 
----
+### Compliance Engine
+- FastAPI
+- SQLAlchemy
+- SQLite (PostgreSQL-ready)
+- NetworkX Graph Engine
 
-## 🚀 Getting Started
-
-The application is split into two distinct, decoupled environments. To get the engine running locally, follow these guides in order:
-
-1. ⚙️ **[Backend Setup Guide](./backend/README.md)**
-   Learn how to configure your Python virtual environment, install API dependencies, set your Gemini API key, and boot the FastAPI server.
-
-2. 🖥️ **[Frontend Setup Guide](./frontend/README.md)**
-   Once the backend is listening, use this guide to install the React/Electron client dependencies and start the desktop interface.
-
-3. 🧪 **[End-to-End Testing Workflow](./Testing_docs/TEST_README.md)**
-   After both servers are running, **read this guide strictly**. It walks you through the entire user experience: from logging in as an Admin to seed the AI with raw PDFs, to logging in as a Client to trigger the automated telemetry scan.
+### Client Layer
+- Electron
+- React
+- React Router
+- Tailwind CSS
+- PowerShell-based System Scanner
 
 ---
 
-## 📚 System Architecture & Documentation
+# Tech Stack
 
-CompactIQ is built on a highly modular architecture designed to scale into a multi-tenant cloud offering. If you are looking to contribute to the engine or understand the internal mechanics, you **must** read our internal documentation:
+### Backend
+- FastAPI
+- SQLAlchemy
+- SQLite / PostgreSQL
+- Google GenAI SDK (Gemini 2.0 Flash)
+- NetworkX
+- PyMuPDF
 
-* 🏛️ **[Architecture Overview](./docs/architecture.md):** Details the dual-domain model (Global Knowledge Graph vs. Local Endpoint Graph), the migration strategy towards Neo4j, and technical debt management.
-* 📂 **[System Working & File Dictionary](./docs/working.md):** Contains a complete structural dictionary of every file in the repository and explains the specific data boundaries between the frontend and backend.
+### Frontend
+- Electron
+- React
+- React Router (HashRouter)
+- Tailwind CSS
+- React Flow
+- Recharts
+
+### System Scanning
+- Node.js
+- Electron IPC
+- Native PowerShell
 
 ---
 
-## 🛣 Future Roadmap
+# How It Works
 
-* **Graph Database Migration:** Deprecate NetworkX in favor of a dedicated Neo4j instance for Cypher-based graph traversal.
-* **Conversational Agent:** Implement a Text2Cypher LLM agent on the frontend allowing users to query the graph naturally (e.g., *"Which endpoints are missing the Tanium Client?"*).
-* **Multi-Tenant Segmentation:** Enforce PostgreSQL schemas to segregate Enterprise Tenants while maintaining a shared Global Intelligence graph.
+1. Upload enterprise compatibility PDFs through the Admin Portal.
+2. Gemini parses and extracts dependency rules.
+3. Rules are stored as a knowledge graph.
+4. The Electron client performs a local system scan.
+5. Hardware and software inventory is sent to the backend.
+6. The compliance engine validates the endpoint against extracted rules.
+7. Results are displayed through dashboards and an interactive knowledge graph.
 
 ---
-*Developed as a next-generation approach to dynamic Endpoint Compliance.*
+
+# Prerequisites
+
+Before running the project, ensure the following are installed:
+
+- Python **3.10+**
+- Node.js & npm
+- Git
+- A valid Gemini API Key
+
+---
+
+# Backend Setup
+
+## 1. Clone the Repository
+
+```bash
+git clone https://github.com/yourusername/CompactIQ.git
+cd CompactIQ
+```
+
+## 2. Create a Virtual Environment
+
+### Windows
+
+```powershell
+python -m venv venv
+.\venv\Scripts\activate
+```
+
+### macOS/Linux
+
+```bash
+python3 -m venv venv
+source venv/bin/activate
+```
+
+## 3. Install Dependencies
+
+```bash
+pip install -r requirements.txt
+```
+
+Or manually install:
+
+```bash
+pip install fastapi uvicorn sqlalchemy aiosqlite pydantic-settings google-genai aiofiles python-multipart pymupdf networkx
+```
+
+## 4. Configure Environment Variables
+
+Copy the example environment file:
+
+```bash
+cp .env.example .env
+```
+
+Update `.env`:
+
+```env
+GEMINI_API_KEY=your_api_key
+USE_SQLITE=true
+ADMIN_MAINTENANCE_PASSWORD=admin123
+```
+
+| Variable | Description |
+|----------|-------------|
+| `GEMINI_API_KEY` | Gemini API Key used for AI document parsing |
+| `USE_SQLITE` | Enable SQLite for local development |
+| `ADMIN_MAINTENANCE_PASSWORD` | Password for admin maintenance actions |
+
+## 5. Start the Backend
+
+```bash
+python -m uvicorn app.main:app --reload --port 8000
+```
+
+Backend:
+
+```
+http://localhost:8000
+```
+
+Swagger Documentation:
+
+```
+http://localhost:8000/docs
+```
+
+---
+
+# Desktop Application
+
+Navigate to the frontend directory.
+
+```bash
+cd frontend
+```
+
+Install dependencies.
+
+```bash
+npm install
+```
+
+Launch the desktop application.
+
+```bash
+npm run electron-dev
+```
+
+This command starts both the React development server and the Electron desktop application.
+
+---
+
+# Using CompactIQ
+
+## Admin Portal
+
+Use the **Change Role** option to switch to the Admin Dashboard.
+
+Available modules include:
+
+- **Document Ingestion** – Upload compatibility PDFs from `Testing_docs/compatibility_docs/`
+- **Rules Matrix** – Inspect extracted compatibility rules and dependencies
+- **Knowledge Base Admin** – Manage stored compliance rules
+- **Database Maintenance** – Reset or clean stored records
+
+## Client View
+
+On launch, the Electron client automatically:
+
+- Collects hardware information
+- Detects installed software
+- Sends endpoint telemetry to the backend
+- Validates the system against the knowledge graph
+- Displays compliance status and detected dependency conflicts
+
+---
+
+# Suggested Project Structure
+
+```text
+CompactIQ
+├── app/
+│   ├── api/
+│   ├── database/
+│   ├── models/
+│   ├── routes/
+│   ├── services/
+│   └── main.py
+│
+├── frontend/
+│   ├── electron/
+│   ├── public/
+│   ├── src/
+│   └── package.json
+│
+├── Testing_docs/
+│   └── compatibility_docs/
+│
+├── requirements.txt
+├── .env.example
+└── README.md
+```
+
+---
+
+# Troubleshooting
+
+### No Rules Extracted
+
+- Verify your `GEMINI_API_KEY`
+- Ensure `gemini-2.0-flash` is configured
+- Confirm uploaded PDFs contain extractable text
+
+### Backend Connection Issues
+
+- Ensure FastAPI is running on port **8000**
+- Launch the project using the Electron application instead of a browser
+
+### Endpoint Scan Fails
+
+Verify:
+
+- Node.js installation
+- PowerShell permissions
+- Electron IPC handlers
+
+---
+
+# 🛣 Future Roadmap
+
+- Neo4j graph database migration
+- PostgreSQL multi-tenant support
+- Natural-language graph querying (Text-to-Cypher)
+- Real-time compliance monitoring
+- Automated remediation suggestions
+- Vendor-specific compliance packs
+- Historical compliance tracking
+- Cloud-hosted centralized management
+
+---
+
+# Contributors
+
+Developed as a hackathon project showcasing how AI-powered document intelligence, knowledge graphs, and endpoint telemetry can be combined to automate enterprise hardware and software compliance validation.
+
+---
+
+# License
+
+This project is intended for educational and hackathon purposes.
